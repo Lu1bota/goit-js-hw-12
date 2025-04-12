@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .form {
     margin: 0 auto;
     width: 371px;
@@ -48,6 +52,7 @@ button:focus, .btn-load-more:focus {
     width: 125px;
     margin: 0 auto;
     margin-top: 32px;
+    margin-bottom: 32px;
 }
 
 .gallery {

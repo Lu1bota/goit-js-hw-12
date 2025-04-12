@@ -14,12 +14,16 @@ import {
 const form = document.querySelector('.form');
 const input = form.querySelector('input');
 const btnLoadMore = document.querySelector('.btn-load-more');
+const list = document.querySelector('.gallery');
 
 form.addEventListener('submit', handleSubmit);
 btnLoadMore.addEventListener('click', handleCLick);
 
 let pageImg = 1;
 let userRequest = '';
+const perPage = 15;
+hideLoadMoreButton();
+
 async function handleSubmit(event) {
   try {
     event.preventDefault();
@@ -28,7 +32,6 @@ async function handleSubmit(event) {
     if (!input.value.trim().length) return;
     if (userRequest !== input.value) {
       pageImg = 1;
-      //   console.log(page);
     }
     userRequest = input.value;
 
@@ -48,10 +51,18 @@ async function handleSubmit(event) {
     }
     createGallery(data.hits);
     lightbox.refresh();
+    const totalPages = Math.ceil(data.totalHits / perPage);
+    if (pageImg >= totalPages) {
+      hideLoadMoreButton();
+      iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+      });
+    } else {
+      showLoadMoreButton();
+    }
     hideLoader();
     pageImg++;
-    console.log(pageImg);
-    showLoadMoreButton();
   } catch (error) {
     console.error(error.message);
   }
@@ -60,15 +71,40 @@ async function handleSubmit(event) {
 async function handleCLick() {
   try {
     hideLoadMoreButton();
-    showLoader();
+    if (pageImg > 1) {
+      showLoader();
+    }
     const data = await getImagesByQuery(input.value, pageImg);
     createGallery(data.hits);
     pageImg++;
     lightbox.refresh();
-    showLoadMoreButton();
+    // const item = document.querySelector('.list-item');
+    // const height = item.getBoundingClientRect();
+    // console.log(height);
+    // window.scrollBy({
+    //   behavior: 'smooth',
+    //   top: height * 2,
+    // });
+
+    const totalPages = Math.ceil(data.totalHits / perPage);
+    if (pageImg >= totalPages) {
+      hideLoadMoreButton();
+      iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+      });
+    } else {
+      showLoadMoreButton();
+    }
+    // showLoadMoreButton();
     hideLoader();
-    console.log(pageImg);
-    console.log(userRequest);
+    const item = document.querySelector('.list-item');
+    const sizeItem = item.getBoundingClientRect();
+    console.log(sizeItem);
+    window.scrollBy({
+      behavior: 'smooth',
+      top: sizeItem.height * 2,
+    });
   } catch (error) {
     console.error(error.message);
   }
