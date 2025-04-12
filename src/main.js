@@ -37,7 +37,6 @@ async function handleSubmit(event) {
 
     showLoader();
     const data = await getImagesByQuery(input.value, pageImg);
-    console.log(data);
 
     if (data.hits.length === 0) {
       iziToast.error({
@@ -92,7 +91,6 @@ async function handleCLick() {
     hideLoader();
     const item = document.querySelector('.list-item');
     const sizeItem = item.getBoundingClientRect();
-    console.log(sizeItem);
     window.scrollBy({
       behavior: 'smooth',
       top: sizeItem.height * 2,
