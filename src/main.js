@@ -63,7 +63,13 @@ async function handleSubmit(event) {
     hideLoader();
     pageImg++;
   } catch (error) {
-    console.error(error.message);
+    iziToast.error({
+      title: 'Error',
+      message:
+        'Sorry, there are no images matching your search query. Please try again!',
+      position: 'topRight',
+    });
+    hideLoader();
   }
 }
 
@@ -96,6 +102,12 @@ async function handleCLick() {
       top: sizeItem.height * 2,
     });
   } catch (error) {
-    console.error(error.message);
+    iziToast.error({
+      title: 'Error',
+      message:
+        'Sorry, there are no images matching your search query. Please try again!',
+      position: 'topRight',
+    });
+    hideLoader();
   }
 }
